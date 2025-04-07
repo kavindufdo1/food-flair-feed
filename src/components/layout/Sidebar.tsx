@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, User, Users, Search, Heart, Image } from "lucide-react";
+import { Home, User, Users, Search, Heart, Image, MessageSquare } from "lucide-react";
 
 const Sidebar = () => {
   return (
@@ -40,6 +40,13 @@ const Sidebar = () => {
           <Link to="/groups" className="flex items-center space-x-3">
             <Users className="h-5 w-5" />
             <span>Food Groups</span>
+          </Link>
+        </Button>
+        
+        <Button variant="ghost" className="w-full justify-start" asChild>
+          <Link to="/chat" className="flex items-center space-x-3">
+            <MessageSquare className="h-5 w-5" />
+            <span>Messages</span>
           </Link>
         </Button>
         

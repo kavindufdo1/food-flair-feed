@@ -46,7 +46,7 @@ const Navbar = () => {
             </Link>
           </Button>
           <Button variant="ghost" size="icon" asChild>
-            <Link to="/messages" aria-label="Messages">
+            <Link to="/chat" aria-label="Messages">
               <MessageSquare className="h-5 w-5" />
             </Link>
           </Button>
