@@ -98,7 +98,7 @@ const ProfilePage = () => {
                 
                 {user.isCurrentUser ? (
                   <Button asChild className="mt-2 md:mt-0">
-                    <Link to="/settings/profile">
+                    <Link to="/profile/edit">
                       <Edit className="h-4 w-4 mr-2" />
                       Edit Profile
                     </Link>
