@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, User, Users, Search, Heart, Image, MessageSquare } from "lucide-react";
+import { Home, User, Users, Search, Heart, Image, MessageSquare, LogIn, Bookmark } from "lucide-react";
 
 const Sidebar = () => {
   return (
@@ -31,7 +31,7 @@ const Sidebar = () => {
         
         <Button variant="ghost" className="w-full justify-start" asChild>
           <Link to="/saved" className="flex items-center space-x-3">
-            <Heart className="h-5 w-5" />
+            <Bookmark className="h-5 w-5" />
             <span>Saved Posts</span>
           </Link>
         </Button>
@@ -54,6 +54,13 @@ const Sidebar = () => {
           <Link to="/create" className="flex items-center space-x-3">
             <Image className="h-5 w-5" />
             <span>Create Post</span>
+          </Link>
+        </Button>
+        
+        <Button variant="ghost" className="w-full justify-start" asChild>
+          <Link to="/login" className="flex items-center space-x-3">
+            <LogIn className="h-5 w-5" />
+            <span>Login</span>
           </Link>
         </Button>
       </nav>
