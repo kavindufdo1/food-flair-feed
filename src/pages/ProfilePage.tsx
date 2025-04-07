@@ -21,95 +21,18 @@ const ProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const { toast } = useToast();
   
-  // For testing UI without backend, use mock data
-  const useMockData = true; // Set to false when your backend is ready
-  
-  // Mock user data
-  const mockUser = {
-    id: userId || "user1",
-    name: "Julia Chen",
-    username: "juliachef",
-    avatar: "/placeholder.svg",
-    bio: "Food photographer & home chef 📸🍽️ Sharing culinary adventures from my kitchen and beyond.",
-    location: "New York City",
-    followers: 1253,
-    following: 435,
-    isCurrentUser: !userId || userId === "user1"
-  };
-  
-  // Mock posts data
-  const mockPosts = [
-    {
-      id: "post1",
-      user: {
-        id: mockUser.id,
-        name: mockUser.name,
-        username: mockUser.username,
-        avatar: mockUser.avatar
-      },
-      content: "Just tried this amazing pasta at Villa Roma! The carbonara was perfectly creamy with just the right amount of pepper. Definitely recommend trying it if you're in the area.",
-      images: ["/placeholder.svg", "/placeholder.svg"],
-      likes: 42,
-      comments: 7,
-      timestamp: "3 hours ago",
-      location: "Villa Roma, New York",
-      rating: 5
-    },
-    {
-      id: "post2",
-      user: {
-        id: mockUser.id,
-        name: mockUser.name,
-        username: mockUser.username,
-        avatar: mockUser.avatar
-      },
-      content: "Made my grandma's secret recipe cookies today. These chocolate chip beauties came out perfect! Crispy on the outside, gooey on the inside. \n\nSecret ingredient? A pinch of sea salt on top before baking! 🍪✨",
-      images: ["/placeholder.svg"],
-      likes: 128,
-      comments: 24,
-      timestamp: "5 hours ago"
-    },
-    {
-      id: "post3",
-      user: {
-        id: mockUser.id,
-        name: mockUser.name,
-        username: mockUser.username,
-        avatar: mockUser.avatar
-      },
-      content: "Weekend brunch vibes at Sunrise Cafe. Their avocado toast is next level!",
-      images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
-      likes: 87,
-      comments: 12,
-      timestamp: "1 day ago",
-      location: "Sunrise Cafe, Seattle",
-      rating: 4
-    }
-  ];
-
-  // Mock saved posts
-  const mockSavedPosts = [mockPosts[1]];
-  
   // Fetch user data and posts from API
   useEffect(() => {
     const fetchUserData = async () => {
-      if (useMockData) {
-        setUser(mockUser);
-        setPosts(mockPosts);
-        setSavedPosts(mockSavedPosts);
-        setIsLoading(false);
-        return;
-      }
-      
       try {
         setIsLoading(true);
         
-        // Fetch user profile
+        // Fetch user profile using mock API
         const profileId = userId || 'current'; // Use 'current' to get current user if no userId provided
         const userResponse = await userApi.getProfile(profileId);
         setUser(userResponse.data);
         
-        // Fetch user posts
+        // Fetch user posts using mock API
         const postsResponse = await postApi.getUserPosts(userResponse.data.id);
         setPosts(postsResponse.data.content || []);
         
@@ -127,11 +50,6 @@ const ProfilePage = () => {
           description: "Failed to load profile data. Please try again.",
           variant: "destructive",
         });
-        
-        // Fallback to mock data on error
-        setUser(mockUser);
-        setPosts(mockPosts);
-        setSavedPosts(mockSavedPosts);
         setIsLoading(false);
       }
     };
@@ -140,15 +58,6 @@ const ProfilePage = () => {
   }, [userId, toast]);
   
   const handleFollowToggle = async () => {
-    if (useMockData) {
-      setIsFollowing(!isFollowing);
-      toast({
-        title: isFollowing ? "Unfollowed" : "Following",
-        description: `You are ${isFollowing ? "no longer following" : "now following"} ${mockUser.name}`,
-      });
-      return;
-    }
-    
     try {
       if (isFollowing) {
         await userApi.unfollowUser(user.id);

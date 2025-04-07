@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar } from "@/components/ui/avatar";
 import { Edit, Upload, User } from "lucide-react";
+import { userApi } from "@/services/api";
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
@@ -27,6 +27,24 @@ const EditProfilePage = () => {
   
   const [isLoading, setIsLoading] = useState(false);
 
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await userApi.getProfile('current');
+        setProfileData(prevData => ({
+          ...prevData,
+          ...response.data
+        }));
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        // Keep using default data if fetch fails
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProfileData(prev => ({
@@ -35,19 +53,29 @@ const EditProfilePage = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate update
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Update profile using mock API
+      await userApi.updateProfile('current', profileData);
+      
       toast({
         title: "Profile Updated",
         description: "Your profile has been updated successfully.",
       });
       navigate("/profile");
-    }, 1000);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast({
+        title: "Update Failed",
+        description: "There was an error updating your profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
